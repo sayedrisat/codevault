@@ -1,5 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Heart } from "lucide-react";
+import {
+  Heart,
+  X,
+  Trash2,
+  Save,
+  XCircle,
+  Brain,
+  RotateCcw,
+} from "lucide-react";
 import {
   getRecallSummary,
   LANGUAGES,
@@ -116,16 +124,19 @@ export default function EditorDrawer({
               className={`av-heart-btn${form.favorite ? " active" : ""}`}
               onClick={toggleFavorite}
               type="button"
-              aria-label={form.favorite ? "Remove from favorites" : "Add to favorites"}
-              title={form.favorite ? "Remove from favorites" : "Add to favorites"}
-            >
+              aria-label={
+                form.favorite ? "Remove from favorites" : "Add to favorites"
+              }
+              title={
+                form.favorite ? "Remove from favorites" : "Add to favorites"
+              }>
               <Heart size={15} fill={form.favorite ? "currentColor" : "none"} />
             </button>
             <button
               className="av-drawer-close"
               onClick={onClose}
               aria-label="Close">
-              ✕
+              <X size={18} />
             </button>
           </div>
         </div>
@@ -186,22 +197,34 @@ export default function EditorDrawer({
             <TagsInput tags={form.tags} setTags={setTags} />
           </div>
 
-          <div className={`av-recall-panel${form.recallEnabled ? " active" : ""}`}>
+          <div
+            className={`av-recall-panel${form.recallEnabled ? " active" : ""}`}>
             <div className="av-recall-panel-head">
-              <div>
-                <span>1-4-7 Memory Recall</span>
-                <strong>
-                  {form.recallEnabled ? "Learning mode on" : "Optional learning mode"}
-                </strong>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <Brain size={18} className="av-recall-icon" />
+                <div>
+                  <span>1-4-7 Memory Recall</span>
+                  <strong>
+                    {form.recallEnabled
+                      ? "Learning mode on"
+                      : "Optional learning mode"}
+                  </strong>
+                </div>
               </div>
-              <button
-                className={`av-recall-toggle${form.recallEnabled ? " active" : ""}`}
-                type="button"
-                onClick={toggleRecall}
-                aria-pressed={form.recallEnabled}
-              >
-                {form.recallEnabled ? "On" : "Off"}
-              </button>
+              <label
+                className="av-switch"
+                style={{ width: "40px", height: "28px" }}>
+                <input
+                  type="checkbox"
+                  checked={form.recallEnabled}
+                  onChange={toggleRecall}
+                />
+                <span
+                  className="av-switch-slider"
+                  style={{ borderRadius: "20px" }}
+                />
+              </label>
             </div>
             <p>
               Enable this only for snippets you want to actively remember. It
@@ -221,8 +244,7 @@ export default function EditorDrawer({
                           recallSummary.mastered)
                           ? "complete"
                           : ""
-                      }
-                    >
+                      }>
                       Day {interval}
                     </span>
                   ))}
@@ -237,15 +259,23 @@ export default function EditorDrawer({
                       <button
                         type="button"
                         onClick={() => onRecall(editingNote.id)}
-                      >
+                        className="av-btn-primary av-btn-sm"
+                        style={{ padding: "6px 12px", fontSize: "11px" }}>
                         Remembered
                       </button>
                     )}
                     <button
                       type="button"
                       onClick={() => onResetRecall(editingNote.id)}
-                    >
-                      Restart
+                      className="av-btn-ghost av-btn-sm"
+                      style={{
+                        padding: "6px 10px",
+                        fontSize: "11px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                      }}>
+                      <RotateCcw size={12} /> Restart
                     </button>
                   </div>
                 ) : (
@@ -272,17 +302,17 @@ export default function EditorDrawer({
             <button
               className="av-btn-danger-text"
               onClick={() => onDelete(editingNote.id)}>
-              🗑 Delete
+              <Trash2 size={14} /> Delete
             </button>
           ) : (
             <span />
           )}
           <div style={{ display: "flex", gap: 10, marginLeft: "auto" }}>
             <button className="av-btn-ghost" onClick={onClose}>
-              Cancel
+              <XCircle size={14} /> Cancel
             </button>
             <button className="av-btn-primary" onClick={handleSave}>
-              Save note
+              <Save size={14} /> Save note
             </button>
           </div>
         </div>

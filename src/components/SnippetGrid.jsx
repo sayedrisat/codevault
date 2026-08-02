@@ -10,6 +10,7 @@ export default function SnippetGrid({
   onDelete,
   onRecall,
   onNewNote,
+  onToggleFavorite,
 }) {
   if (notes.length === 0) {
     return <EmptyState activeCollection={activeCollection} onNewNote={onNewNote} />;
@@ -26,6 +27,7 @@ export default function SnippetGrid({
           onCopy={onCopy}
           onDelete={onDelete}
           onRecall={onRecall}
+          onToggleFavorite={onToggleFavorite}
         />
       ))}
     </div>

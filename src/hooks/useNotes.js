@@ -311,6 +311,8 @@ export default function useNotes() {
         activeCollection !== "All" &&
         activeCollection !== "Favorites" &&
         activeCollection !== RECALL_COLLECTION &&
+        activeCollection !== "tags" &&
+        activeCollection !== "settings" &&
         n.collection !== activeCollection
       )
         return false;

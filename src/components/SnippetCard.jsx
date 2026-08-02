@@ -1,6 +1,7 @@
 import { getRecallSummary, RECALL_INTERVALS } from "../hooks/useNotes.js";
+import { Copy, Trash2, Heart, Code2 } from "lucide-react";
 
-export default function SnippetCard({ note, index, onOpen, onCopy, onDelete, onRecall }) {
+export default function SnippetCard({ note, index, onOpen, onCopy, onDelete, onRecall, onToggleFavorite }) {
   const recall = getRecallSummary(note);
 
   return (
@@ -10,7 +11,10 @@ export default function SnippetCard({ note, index, onOpen, onCopy, onDelete, onR
       onClick={() => onOpen(note.id)}
     >
       <div className="av-card-top">
-        <span className="av-card-lang">{note.lang}</span>
+        <div className="av-card-lang">
+          <Code2 size={12} />
+          {note.lang || "text"}
+        </div>
         <div className="av-card-actions">
           <button
             className="av-icon-btn"
@@ -20,7 +24,7 @@ export default function SnippetCard({ note, index, onOpen, onCopy, onDelete, onR
               onCopy(note.code);
             }}
           >
-            ⎘
+            <Copy size={14} />
           </button>
           <button
             className="av-icon-btn danger"
@@ -30,19 +34,24 @@ export default function SnippetCard({ note, index, onOpen, onCopy, onDelete, onR
               onDelete(note.id);
             }}
           >
-            🗑
+            <Trash2 size={14} />
           </button>
         </div>
       </div>
       <div className="av-card-title">
-        {note.title}
-        {note.favorite && (
-          <span className="av-card-favorite" aria-label="Favorite snippet">
-            ♥
-          </span>
-        )}
+        {note.title || "Untitled Snippet"}
+        <button 
+          className={`av-card-favorite-btn ${note.favorite ? "active" : ""}`} 
+          aria-label={note.favorite ? "Remove from favorites" : "Add to favorites"}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite(note);
+          }}
+        >
+          <Heart size={14} fill={note.favorite ? "currentColor" : "none"} />
+        </button>
       </div>
-      <div className="av-card-reason">{note.reason}</div>
+      <div className="av-card-reason">{note.reason || "No description provided."}</div>
 
       {recall.enabled && (
         <div className={`av-recall-card${recall.due ? " due" : ""}`}>
@@ -78,11 +87,13 @@ export default function SnippetCard({ note, index, onOpen, onCopy, onDelete, onR
         </div>
       )}
 
-      <div className="av-card-tags">
-        {note.tags.map((t) => (
-          <span key={t} className="av-card-tag">{t}</span>
-        ))}
-      </div>
+      {note.tags && note.tags.length > 0 && (
+        <div className="av-card-tags">
+          {note.tags.map((t) => (
+            <span key={t} className="av-card-tag">#{t}</span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
